@@ -1,25 +1,27 @@
 #include <iostream>
+#include <cctype>
 
-int main(int ac, char **av)
+int main(int argc, char **argv)
 {
-    int i;
-    int j;
-    if (ac == 1)
-        std::cout << "* LOUD AND UNBEARABLE FEEDBACK NOISE *";
-    i = 1;
-    while (av[i])
-    {
-        j = 0;
-        while (av[i][j])
-        {
-            if (av[i][j] >= 97 && av[i][j] <= 122)
-                std::cout << static_cast<char>(av[i][j] - 32);
-            else
-                std::cout << av[i][j];
-            j++;
-        }
-        i++;
-    }
-    std::cout << '\n';
-    return (0);
+	int i;
+	int j;
+
+	if (argc == 1)
+	{
+		std::cout << "* LOUD AND UNBEARABLE FEEDBACK NOISE *" << std::endl;
+		return 0;
+	}
+	i = 1;
+	while (i < argc)
+	{
+		j = 0;
+		while (argv[i][j] != '\0')
+		{
+			std::cout << static_cast<char>(std::toupper(static_cast<unsigned char>(argv[i][j])));
+			j++;
+		}
+		i++;
+	}
+	std::cout << std::endl;
+	return 0;
 }
