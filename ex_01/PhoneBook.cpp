@@ -4,9 +4,22 @@ PhoneBook::PhoneBook() : nextIndex(0), countContact(0)
 {
 }
 
+static bool isBlank(std::string str)
+{
+    int i = 0;
+
+    while (str[i])
+    {
+        if (str[i] != ' ' && str[i] != '\t')
+            return (false);
+        i++;
+    }
+    return (true);
+}
+
 static std::string shortenField(std::string field)
 {
-    if (field.length() >= 10)
+    if (field.length() > 10)
         return field.substr(0, 9) + '.';
     else
         return field;
@@ -20,31 +33,38 @@ void PhoneBook::addContact()
     std::string num;
     std::string secret;
 
-    std::cout << "\033[2J\033[1;1H";
-    while(first.empty())
+    std::cout << "\n";
+    std::cout << "Add Contact";
+    std::cout << "\n";
+    while(isBlank(first))
     {
         std::cout << "First name: ";
-        std::getline(std::cin, first);
+        if (!std::getline(std::cin, first))
+            return;
     }
-    while(last.empty())
+    while(isBlank(last))
     {
-        std::cout << "last name: ";
-        std::getline(std::cin, last);
+        std::cout << "Last name: ";
+        if (!std::getline(std::cin, last))
+            return;
     }
-    while(Nickn.empty())
+    while(isBlank(Nickn))
     {
         std::cout << "Nick name: ";
-        std::getline(std::cin, Nickn);
+        if (!std::getline(std::cin, Nickn))
+            return;
     }
-    while(num.empty())
+    while(isBlank(num))
     {
         std::cout << "Number: ";
-        std::getline(std::cin, num);
+        if (!std::getline(std::cin, num))
+            return;
     }
-    while(secret.empty())
+    while(isBlank(secret))
     {
         std::cout << "Secret: ";
-        std::getline(std::cin, secret);
+        if (!std::getline(std::cin, secret))
+            return;
     }
     contacts[nextIndex].setFirstName(first);
     contacts[nextIndex].setLastName(last);
@@ -58,6 +78,9 @@ void PhoneBook::addContact()
 
 static void print_contact_details(int index, Contact contacts[8])
 {
+    std::cout << "\n";
+    std::cout << "Contact Details";
+    std::cout << "\n";
     std::cout << "First name: " << contacts[index].getFirstName() << std::endl;
     std::cout << "Last name: " << contacts[index].getLastName() << std::endl;
     std::cout << "Nick name: " << contacts[index].getNickName() << std::endl;
@@ -67,19 +90,24 @@ static void print_contact_details(int index, Contact contacts[8])
 
 static void print_contact_list(Contact contacts[8], int count)
 {
-    std::cout << "\033[2J\033[1;1H"; 
+    std::cout << "\n";
+    std::cout << std::setw(10) << std::right << "Index" << "|";
+    std::cout << std::setw(10) << std::right << "First name" << "|";
+    std::cout << std::setw(10) << std::right << "Last name" << "|";
+    std::cout << std::setw(10) << std::right << "Nickname" << "\n";
     for (int i = 0; i < count; i++)
     {
         std::cout << std::setw(10) << std::right << i << "|";
         std::cout << std::setw(10) << std::right << shortenField(contacts[i].getFirstName()) << "|";
         std::cout << std::setw(10) << std::right << shortenField(contacts[i].getLastName()) << "|";
-        std::cout << std::setw(10) << std::right << shortenField(contacts[i].getNickName()) << std::endl;
+        std::cout << std::setw(10) << std::right << shortenField(contacts[i].getNickName());
+        std::cout << "\n";
     }
+    std::cout << "\n";
 }
 
 void PhoneBook::searchContact()
 {
-    
     std::string index;
     
     print_contact_list(contacts, countContact);
@@ -98,5 +126,7 @@ void PhoneBook::searchContact()
         return;
     }
     print_contact_details(i, contacts);
-    std::cout << '\n';
+    std::cout << "\nPress enter to continue...";
+    std::string dummy;
+    std::getline(std::cin, dummy);
 }
